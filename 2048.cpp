@@ -2,11 +2,11 @@
 #include<bits/stdc++.h>
 #include<conio.h>
 #include<windows.h>
-#define WALL "---------------------"
 using namespace std;
 int mapp[6][6],score,maxscore;
 bool mappp[6][6];//判断这个点是否已经合成过
 char c;
+const char WALL[]="---------------------";
 
 bool over();
 void GetMaxScore();
