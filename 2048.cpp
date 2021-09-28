@@ -37,7 +37,8 @@ int main(){
 	srand(time(NULL));
 	GetMaxScore();
 	bool flag=0;
-	
+	mapp[0][0]=mapp[5][5]=-1;
+	for(int i=1;i<=4;i++)mapp[i][0]=mapp[0][i]=mapp[i][5]=mapp[5][i]=-1;
 	while(1){
 		if(!flag) printf("Press any key to start");
 			else printf("Press any key to restart");
