@@ -43,7 +43,7 @@ int main(){
 		if(!flag) printf("Press any key to start");
 			else printf("Press any key to restart");
 		getch();
-		if(Read()){
+		if(!flag&&Read()){
 			printf("\nLast game's record detected\nContinue with it?\n1.Yes 0.No");
 			if(getch()=='1')goto Start;
 		}
