@@ -43,7 +43,7 @@ int main(){
 		getch();
 		memset(mapp,0,sizeof(mapp));
 		if(Read()){
-			printf("Last game's record detected\nContinue with it?\n1.Yes 0.No");
+			printf("\nLast game's record detected\nContinue with it?\n1.Yes 0.No");
 			if(getch()=='1')goto Start;
 		}
 		Set();
