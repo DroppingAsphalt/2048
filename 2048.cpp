@@ -15,8 +15,11 @@ void OutPut();
 void Set();
 void mov(int,int);
 void MoveNum(int,int,int,int,bool &);
+void Save();
+bool Read();
 
 int main(){
+	HWND hwnd=GetForegroundWindow();
 	HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO cursorInfo;
 	cursorInfo.bVisible=0;
@@ -32,16 +35,20 @@ int main(){
 	//设置控制台大小
 	srand(time(NULL));
 	GetMaxScore();
-	
 	bool flag=0;
+	
 	while(1){
 		if(!flag) printf("Press any key to start");
 			else printf("Press any key to restart");
-		c=getch();
-		score=0;
+		getch();
 		memset(mapp,0,sizeof(mapp));
-		for(int i=0;i<=5;i++)mapp[i][0]=mapp[i][5]=mapp[0][i]=mapp[5][i]=-1;
+		if(Read()){
+			printf("Last game's record detected\nContinue with it?\n1.Yes 0.No");
+			if(getch()=='1')goto Start;
+		}
 		Set();
+Start:
+		score=0;
 		while(1){
 			flag=1;
 			OutPut();
@@ -55,19 +62,22 @@ int main(){
 			if(c=='0'){
 				printf("Are you sure to exit?\n1.Yes 0.No");
 				if(getch()=='1'){
+					Save();
 					system("cls");
 					break;
 				}
-					else{
-						OutPut();
-						c=getch();
-					}
+				else{
+					OutPut();
+					c=getch();
+				}
 			}
 			switch(c){
 				case 'a':case 'A':mov(0,-1);break;
 				case 's':case 'S':mov(1,0);break;
 				case 'd':case 'D':mov(0,1);break;
 				case 'w':case 'W':mov(-1,0);break;
+				case '\r':case '\n':ShowWindow(hwnd,SW_MINIMIZE);break;
+				case 'r':case 'R':Save();return 0;
 				default:printf("INVALID COMMAND"); Sleep(500);
 			} 
 			memset(mappp,0,sizeof(mappp));
@@ -132,7 +142,7 @@ void UpdateMaxScore(){
 		fout.close();
 		cout<<"NEW SCORE!";
 	}
-		else cout<<"Max score:"<<maxscore;
+	else cout<<"Max score:"<<maxscore;
 }
 void OutPut(){
 	system("cls");
@@ -155,4 +165,22 @@ void Set(){
 	int k=rand()%5;
 	mapp[x][y]=k<1?4:2;
 	//20%概率生成4，80%概率生成2
+}
+void Save(){
+	ofstream fout("lastgame");
+	for(int i=1;i<=4;i++)
+		for(int j=1;j<=4;j++)
+			fout<<mapp[i][j]<<' ';
+	fout.close();
+}
+bool Read(){
+	for(int i=0;i<=5;i++)mapp[i][0]=mapp[i][5]=mapp[0][i]=mapp[5][i]=-1;
+	ifstream fin("lastgame");
+	if(!fin.is_open())return 0;
+	for(int i=1;i<=4;i++)
+		for(int j=1;j<=4;j++)
+			fin>>mapp[i][j];
+	fin.close();
+	remove("lastgame");
+	return 1;
 }
