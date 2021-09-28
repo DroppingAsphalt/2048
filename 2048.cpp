@@ -22,6 +22,7 @@ int main(){
 	HWND hwnd=GetForegroundWindow();
 	HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO cursorInfo;
+	GetConsoleCursorInfo(hOut, &cursorInfo);
 	cursorInfo.bVisible=0;
 	SetConsoleCursorInfo(hOut, &cursorInfo);
 	//设置光标不可见
@@ -30,7 +31,7 @@ int main(){
 	COORD size={24,13};
 	SetConsoleScreenBufferSize(hOut, size);
 	//设置控制台缓冲区大小
-	SMALL_RECT rect={0,0,24,13};
+	SMALL_RECT rect={0,0,26,13};
 	SetConsoleWindowInfo(hOut,1,&rect);
 	//设置控制台大小
 	srand(time(NULL));
@@ -41,11 +42,12 @@ int main(){
 		if(!flag) printf("Press any key to start");
 			else printf("Press any key to restart");
 		getch();
-		memset(mapp,0,sizeof(mapp));
 		if(Read()){
 			printf("\nLast game's record detected\nContinue with it?\n1.Yes 0.No");
 			if(getch()=='1')goto Start;
 		}
+		for(int i=1;i<=4;i++)
+			for(int j=1;j<=4;j++)mapp[i][j]=0;
 		Set();
 Start:
 		score=0;
@@ -174,7 +176,6 @@ void Save(){
 	fout.close();
 }
 bool Read(){
-	for(int i=0;i<=5;i++)mapp[i][0]=mapp[i][5]=mapp[0][i]=mapp[5][i]=-1;
 	ifstream fin("lastgame");
 	if(!fin.is_open())return 0;
 	for(int i=1;i<=4;i++)
