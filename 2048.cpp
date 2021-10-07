@@ -5,7 +5,7 @@
 using namespace std;
 int mapp[6][6],score,maxscore;
 bool mappp[6][6];//判断这个点是否已经合成过
-char c;
+int c;
 const char WALL[]="---------------------";
 
 bool over();
@@ -52,6 +52,7 @@ int main(){
 		Set();
 Start:
 		score=0;
+		int x=0,y=0;
 		while(1){
 			flag=1;
 			OutPut();
@@ -75,12 +76,18 @@ Start:
 				}
 			}
 			switch(c){
-				case 'a':case 'A':mov(0,-1);break;
-				case 's':case 'S':mov(1,0);break;
-				case 'd':case 'D':mov(0,1);break;
-				case 'w':case 'W':mov(-1,0);break;
-				case '\r':case '\n':ShowWindow(hwnd,SW_MINIMIZE);break;
-				case 'r':case 'R':Save();return 0;
+				case 224:switch(getch()){
+					case 75:goto LEFT;
+					case 80:goto DOWN;
+					case 77:goto RIGHT;
+					case 72:goto UP;
+				}
+				case 'a':case 'A':LEFT:x=0,y=1;mov(0,-1);break;
+				case 's':case 'S':DOWN:x=-1,y=0;mov(1,0);break;
+				case 'd':case 'D':RIGHT:x=0,y=-1;mov(0,1);break;
+				case 'w':case 'W':UP:x=1,y=0;mov(-1,0);break;
+				case '\b':ShowWindow(hwnd,SW_MINIMIZE);break;
+				case 27:Save();return 0;
 				default:printf("INVALID COMMAND"); Sleep(500);
 			} 
 			memset(mappp,0,sizeof(mappp));
